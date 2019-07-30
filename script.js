@@ -1,10 +1,10 @@
 
-var framedistanceSlider = document.getElementById("framedistance-slider");
-var framedistanceElem = document.getElementById("framedistance");
+var inputLagSlider = document.getElementById("input-lag-slider");
+var inputLagDisplay = document.getElementById("input-lag-display");
 var fpsElem = document.getElementById("fps");
 
-framedistanceSlider.oninput = function (e) {
-	framedistanceElem.textContent = framedistanceSlider.valueAsNumber;
+inputLagSlider.oninput = function (e) {
+	inputLagDisplay.textContent = inputLagSlider.valueAsNumber;
 }
 
 var canvas = document.getElementById("canvas");
@@ -48,16 +48,21 @@ var dist = 0;
 var frames = 0;
 var lastFpsTime = performance.now();
 
-function update() {
+var lastRendertime = performance.now();
+function update(now) {
+	var dt = now - lastRendertime;
+	lastRendertime = now;
+
 	updateCanvasSize();
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.lineWidth = 2;
 
-	dist += (distance(oldPos, currPos) - dist) * 0.05;
+	//dist += (distance(oldPos, currPos) - dist) * 0.05;
+	dist +=  (distance(oldPos, currPos)/dt-dist) * (1-Math.exp(-dt*0.008));
 
 	drawCircle( currPos, 2 );
-	drawCircle( currPos, framedistanceSlider.valueAsNumber * dist, "red" );
+	drawCircle( currPos, inputLagSlider.valueAsNumber * dist, "red" );
 
 	oldPos.x = currPos.x;
 	oldPos.y = currPos.y;
@@ -74,4 +79,3 @@ function update() {
 }
 
 requestAnimationFrame(update);
-console.log("hi");
