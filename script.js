@@ -8,7 +8,10 @@ inputLagSlider.oninput = function (e) {
 }
 
 var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext('2d');
+var ctx = canvas.getContext('2d', {
+	alpha: true,
+	desynchronized: !!window.useDesynchronizedCanvas,
+  });
 
 var oldPos = {x : 0, y : 0};
 var currPos = {x : 0, y : 0};
@@ -51,29 +54,29 @@ var lastFpsTime = performance.now();
 var lastRendertime = performance.now();
 function update(now) {
 	var dt = now - lastRendertime;
-	lastRendertime = now;
+		lastRendertime = now;
 
-	updateCanvasSize();
+		updateCanvasSize();
 
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.lineWidth = 2;
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.lineWidth = 2;
 
-	//dist += (distance(oldPos, currPos) - dist) * 0.05;
-	dist +=  (distance(oldPos, currPos)/dt-dist) * (1-Math.exp(-dt*0.008));
+		//dist += (distance(oldPos, currPos) - dist) * 0.05;
+		dist +=  (distance(oldPos, currPos)/dt-dist) * (1-Math.exp(-dt*0.008));
 
-	drawCircle( currPos, 2 );
-	drawCircle( currPos, inputLagSlider.valueAsNumber * dist, "red" );
+		drawCircle( currPos, 2 );
+		drawCircle( currPos, inputLagSlider.valueAsNumber * dist, "red" );
 
-	oldPos.x = currPos.x;
-	oldPos.y = currPos.y;
+		oldPos.x = currPos.x;
+		oldPos.y = currPos.y;
 
-	frames++;
-	var now = performance.now();
-	if ( now - lastFpsTime > 500 ) {
-		fpsElem.textContent = frames * 1000 / (now - lastFpsTime);
-		lastFpsTime = now;
-		frames = 0;
-	}
+		frames++;
+		var now = performance.now();
+		if ( now - lastFpsTime > 500 ) {
+			fpsElem.textContent = frames * 1000 / (now - lastFpsTime);
+			lastFpsTime = now;
+			frames = 0;
+		}
 
 	requestAnimationFrame(update);
 }

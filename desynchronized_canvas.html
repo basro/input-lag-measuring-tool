@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Input lag measuring tool</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<h3>Input lag measuring tool- Desynchronized canvas</h3>
+		<p>You can use this tool to measure the input lag of the browser.</p>
+		<p>Move your mouse around at constant speed and adjust the slider until the outer circle matches your mouse pointer.</p>
+		<div><input id="input-lag-slider" type="range" min="1" max="200" step="0.1" value="48" style="width:300px"></div>
+		<p>Milliseconds of input lag: <span id="input-lag-display">48</span></p>
+		<p>FPS: <span id="fps">0</span></p>
+
+		<canvas id="canvas" style="width:100%; height:800px; border: 1px solid black" ></canvas>
+		<script>window.useDesynchronizedCanvas = true</script>
+		<script src="script.js"></script> 
+	</body>
+</html>
